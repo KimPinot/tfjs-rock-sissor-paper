@@ -1,25 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c39786c4-d361-43f8-9b04-0a519f690115" name="Default Changelist" comment="" />
+    <list default="true" id="c39786c4-d361-43f8-9b04-0a519f690115" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/_app.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/hello.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/Home.module.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/globals.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="GitToolBoxStore">
     <option name="projectConfigVersion" value="2" />
   </component>
   <component name="ProjectId" id="1hcxLtYZ6Lr6ddIf9usZSIdlLfm" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
     <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/old" />
+      <recent name="$PROJECT_DIR$/src" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.dev" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -30,6 +72,8 @@
       <option name="presentableId" value="Default" />
       <updated>1600324128795</updated>
       <workItem from="1600324130003" duration="143000" />
+      <workItem from="1600324297489" duration="2840000" />
+      <workItem from="1600407050348" duration="11807000" />
     </task>
     <servers />
   </component>
@@ -37,9 +81,31 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="433" y="-1081" key="SettingsEditor" timestamp="1600324285495">
-      <screen x="-348" y="-1440" width="2560" height="1440" />
+    <state width="1419" height="344" key="GridCell.Tab.0.bottom" timestamp="1600418716690">
+      <screen x="-1440" y="-998" width="1440" height="2560" />
     </state>
+    <state width="1419" height="344" key="GridCell.Tab.0.bottom/0.0.1920.1200/-1440.-998.1440.2560@-1440.-998.1440.2560" timestamp="1600418716690" />
+    <state width="1131" height="268" key="GridCell.Tab.0.bottom/0.23.1680.1027/-1152.-975.1152.2025@-1152.-975.1152.2025" timestamp="1600405867072" />
+    <state width="1419" height="344" key="GridCell.Tab.0.center" timestamp="1600418716688">
+      <screen x="-1440" y="-998" width="1440" height="2560" />
+    </state>
+    <state width="1419" height="344" key="GridCell.Tab.0.center/0.0.1920.1200/-1440.-998.1440.2560@-1440.-998.1440.2560" timestamp="1600418716688" />
+    <state width="1131" height="268" key="GridCell.Tab.0.center/0.23.1680.1027/-1152.-975.1152.2025@-1152.-975.1152.2025" timestamp="1600405867071" />
+    <state width="1419" height="344" key="GridCell.Tab.0.left" timestamp="1600418716687">
+      <screen x="-1440" y="-998" width="1440" height="2560" />
+    </state>
+    <state width="1419" height="344" key="GridCell.Tab.0.left/0.0.1920.1200/-1440.-998.1440.2560@-1440.-998.1440.2560" timestamp="1600418716687" />
+    <state width="1131" height="268" key="GridCell.Tab.0.left/0.23.1680.1027/-1152.-975.1152.2025@-1152.-975.1152.2025" timestamp="1600405867070" />
+    <state width="1419" height="344" key="GridCell.Tab.0.right" timestamp="1600418716689">
+      <screen x="-1440" y="-998" width="1440" height="2560" />
+    </state>
+    <state width="1419" height="344" key="GridCell.Tab.0.right/0.0.1920.1200/-1440.-998.1440.2560@-1440.-998.1440.2560" timestamp="1600418716689" />
+    <state width="1131" height="268" key="GridCell.Tab.0.right/0.23.1680.1027/-1152.-975.1152.2025@-1152.-975.1152.2025" timestamp="1600405867071" />
+    <state x="-1001" y="-360" key="SettingsEditor" timestamp="1600416724498">
+      <screen x="-1440" y="-998" width="1440" height="2560" />
+    </state>
+    <state x="-1001" y="-360" key="SettingsEditor/0.0.1920.1200/-1440.-998.1440.2560@-1440.-998.1440.2560" timestamp="1600416724498" />
     <state x="433" y="-1081" key="SettingsEditor/0.0.1920.1200/-348.-1440.2560.1440@-348.-1440.2560.1440" timestamp="1600324285495" />
+    <state x="433" y="-1081" key="SettingsEditor/0.23.1920.1177/-348.-1440.2560.1440@-348.-1440.2560.1440" timestamp="1600324490221" />
   </component>
 </project>
