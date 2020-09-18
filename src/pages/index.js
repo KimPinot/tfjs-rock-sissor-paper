@@ -1,7 +1,9 @@
 import React, {useEffect, useRef, useState} from 'react'
-import * as cocoSSD from '@tensorflow-models/coco-ssd'
+import * as tmImage from '@teachablemachine/image'
 import '@tensorflow/tfjs'
 import Head from "next/head";
+
+const URL = "https://teachablemachine.withgoogle.com/models/7toSukupP";
 
 function Choice({onChoice, type, text}) {
   return (
@@ -33,24 +35,20 @@ function Result({type}) {
   )
 }
 
-const webCamInit = (ref) => new Promise((async (resolve, reject) => {
+const webCamInit = () => new Promise((async (resolve, reject) => {
   try {
-    const constraints = {
-      audio: false,
-      video: {
-        width: {min: 640, ideal: 1920, max: 1920},
-        height: {min: 400, ideal: 1080},
-        aspectRatio: 1.777777778,
-        frameRate: {max: 30},
-        facingMode: 'user',
-      },
-    }
+    const webcam = new tmImage.Webcam(1920, 1080, true);
     
-    ref.current.srcObject = await navigator.mediaDevices.getUserMedia(constraints)
-    ref.current.oncanplay = () => {
-      console.debug('[시스템] 웹캠이 준비되었습니다.')
-      resolve(ref)
-    }
+    await webcam.setup()
+    await webcam.play()
+    
+    document
+        .getElementById('webcam')
+        .appendChild(webcam.canvas)
+    
+    console.debug('[시스템] 웹캠이 준비되었습니다.')
+    resolve(webcam)
+    
   } catch (e) {
     alert('웹캠을 사용할 수 없거나, 웹캠의 권한을 차단하셨습니다.\n권한을 확인하시고, 다시 시도해보세요!')
     console.error('[오류] 현재 웹캠을 사용할 수 없습니다.')
@@ -60,29 +58,38 @@ const webCamInit = (ref) => new Promise((async (resolve, reject) => {
 
 const modelInit = () => new Promise(async (resolve, reject) => {
   try {
-    const model = await cocoSSD.load()
+    const modelURL = `${URL}/model.json`
+    const metaURL = `${URL}/metadata.json`
+    
+    const model = await tmImage.load(modelURL, metaURL)
+    
     resolve(model)
   } catch (e) {
     reject(e)
   }
 })
 
-const detectFromVideoFrame = (model, video) => {
+const detectFromVideoFrame = (model, webcam) => {
   const initFps = 30
   frameRecursion(initFps)
   
-  function frameRecursion(count) {
+  async function predict() {
+    const pred = await model.predict(webcam.canvas);
+    console.log(pred)
+  }
+  
+  async function frameRecursion(count) {
     if (count < 0) {
       count = initFps
     }
-  
+    
     if (count === 0) {
-      model.detect(video).then(predictions => {
-        console.log(predictions[0])
-      })
+      await predict()
     }
     
-    requestAnimationFrame(() => {
+    webcam.update()
+    
+    requestAnimationFrame(async () => {
       frameRecursion(count - 1)
     })
   }
@@ -105,8 +112,6 @@ export default function Home() {
   
   const [isWebCamLoaded, setIsWebCamLoaded] = useState(false)
   
-  const videoRef = useRef(null)
-  
   // 남은 시간 console.debug 로 띄우기
   useEffect(() => {
     {
@@ -115,26 +120,14 @@ export default function Home() {
   }, [leftTime])
   
   useEffect(() => {
-    (async () => {
-      webCamInit(videoRef)
-          .then(ref => {
-            videoRef.current = ref.current
-            setIsWebCamLoaded(true)
-          })
-          .catch(e => {
-            setIsStart(false)
-            setIsWebCamLoaded(false)
-            console.error(e)
-          })
-      
-      modelInit()
-          .then(model => {
-            detectFromVideoFrame(model, videoRef.current)
-          })
-          .catch(e => {
-            console.error(e)
-          })
-    })()
+    Promise.all([modelInit(), webCamInit()])
+        .then(values => {
+          setIsWebCamLoaded(true)
+          detectFromVideoFrame(values[0], values[1])
+        })
+        .catch(err => {
+          console.error(err)
+        })
   }, [])
   
   useEffect(() => {
@@ -282,8 +275,7 @@ export default function Home() {
           <title>텐서플로우로 하는 가위 바위 보</title>
         </Head>
         
-        <video autoPlay={true} ref={videoRef}
-               style={{width: '100%', transform: 'rotateY(180deg)', display: isStart ? 'block' : 'block'}}/>
+        <div id="webcam" style={{width: '100%'}}/>
         
         {isStart ? (
                 <>
