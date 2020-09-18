@@ -31,6 +31,31 @@ function Result({type}) {
   )
 }
 
+const webCamInit = (ref) => new Promise((async (resolve, reject) => {
+  try {
+    const constraints = {
+      audio: false,
+      video: {
+        width: {min: 640, ideal: 1920, max: 1920},
+        height: {min: 400, ideal: 1080},
+        aspectRatio: 1.777777778,
+        frameRate: {max: 30},
+        facingMode: 'user',
+      },
+    }
+    
+    ref.current.srcObject = await navigator.mediaDevices.getUserMedia(constraints)
+    ref.current.oncanplay = () => {
+      console.debug('[시스템] 웹캠이 준비되었습니다.')
+      resolve(ref)
+    }
+  } catch (e) {
+    alert('웹캠을 사용할 수 없거나, 웹캠의 권한을 차단하셨습니다.\n권한을 확인하시고, 다시 시도해보세요!')
+    console.error('[오류] 현재 웹캠을 사용할 수 없습니다.')
+    reject(e)
+  }
+}))
+
 export default function Home() {
   // 가위 : 0 / 바위 : 1 / 보 : 2
   const [usrChoice, setUsrChoice] = useState(null)
@@ -59,30 +84,17 @@ export default function Home() {
   
   useEffect(() => {
     (async () => {
-      // 웹캠 init
-      try {
-          const stream = await navigator.mediaDevices.getUserMedia({
-            audio: false,
-            video: {
-              width: {min: 640, ideal: 1920, max: 1920},
-              height: {min: 400, ideal: 1080},
-              aspectRatio: 1.777777778,
-              frameRate: {max: 30},
-              facingMode: 'user',
-            },
-          });
-          videoRef.current.srcObject = stream;
-          videoRef.current.oncanplay = () => {
+      webCamInit(videoRef)
+          .then(ref => {
+            videoRef.current = ref.current
             setIsWebCamLoaded(true)
-            console.debug('[시스템] 웹캠이 준비되었습니다.')
-          };
-        } catch (e) {
-            setIsWebCamLoaded(false)
+          })
+          .catch(e => {
             setIsStart(false)
-          alert('웹캠을 사용할 수 없거나, 웹캠의 권한을 차단하셨습니다.\n권한을 확인하시고, 다시 시도해보세요!')
-          console.error('[오류] 현재 웹캠을 사용할 수 없습니다.', e.toString())
-        }
-      })()
+            setIsWebCamLoaded(false)
+            console.error(e)
+          })
+    })()
   }, [])
   
   useEffect(() => {
