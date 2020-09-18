@@ -1,4 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react'
+import * as cocoSSD from '@tensorflow-models/coco-ssd'
+import '@tensorflow/tfjs'
 import Head from "next/head";
 
 function Choice({onChoice, type, text}) {
@@ -56,6 +58,36 @@ const webCamInit = (ref) => new Promise((async (resolve, reject) => {
   }
 }))
 
+const modelInit = () => new Promise(async (resolve, reject) => {
+  try {
+    const model = await cocoSSD.load()
+    resolve(model)
+  } catch (e) {
+    reject(e)
+  }
+})
+
+const detectFromVideoFrame = (model, video) => {
+  const initFps = 30
+  frameRecursion(initFps)
+  
+  function frameRecursion(count) {
+    if (count < 0) {
+      count = initFps
+    }
+  
+    if (count === 0) {
+      model.detect(video).then(predictions => {
+        console.log(predictions[0])
+      })
+    }
+    
+    requestAnimationFrame(() => {
+      frameRecursion(count - 1)
+    })
+  }
+}
+
 export default function Home() {
   // 가위 : 0 / 바위 : 1 / 보 : 2
   const [usrChoice, setUsrChoice] = useState(null)
@@ -92,6 +124,14 @@ export default function Home() {
           .catch(e => {
             setIsStart(false)
             setIsWebCamLoaded(false)
+            console.error(e)
+          })
+      
+      modelInit()
+          .then(model => {
+            detectFromVideoFrame(model, videoRef.current)
+          })
+          .catch(e => {
             console.error(e)
           })
     })()
