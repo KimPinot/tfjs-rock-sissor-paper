@@ -1,30 +1,20 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## tfjs-rock-sissor-paper
 
-## Getting Started
+tensorflowJS와 Teachable Machine을 사용하여 간단한 가위 바위 보 게임을 만들었습니다.
 
-First, run the development server:
+### How to run server
+NodeJS 12 이상의 버전이 필요합니다.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+1. cli에 `yarn` 명령어를 입력하여 디펜던시를 설치합니다.
+1. cli에 `yarn dev` 명령어를 입력하여 `localhost:3000` 로 접속하여 게임을 플레이 할 수 있습니다.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### How to play
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+1. 메인 화면의 시작하기 버튼을 누릅니다.
+1. 10초의 시간을 기다립니다.
+1. `안 내면 진 거 가위 바위 보!!!` 라는 메시지가 출력되는 동안 버튼을 눌러 선택하거나, 모든 메시지가 출력된 직후 손으로 가위, 바위, 보 중 하나를 표시하세요.
+1. 다시 하기 버튼을 눌러 게임을 다시 시작하세요.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Stack
+* NextJS With React
+* TensorflowJS with Teachable Machines
