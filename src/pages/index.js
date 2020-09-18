@@ -40,11 +40,15 @@ export default function Home() {
   const [isWin, setIsWin] = useState(null)
   
   const [isStart, setIsStart] = useState(false)
-  const [isInGame, setIsInGame]= useState(false)
+  const [isInGame, setIsInGame] = useState(false)
   
   const [leftTime, setLeftTime] = useState(0)
   
   const [isAfk, setIsAfk] = useState(false)
+  
+  const [isWebCamLoaded, setIsWebCamLoaded] = useState(false)
+  
+  const videoRef = useRef(null)
   
   // 남은 시간 console.debug 로 띄우기
   useEffect(() => {
@@ -52,6 +56,34 @@ export default function Home() {
       leftTime ? console.debug(`[시스템] 타이머의 남은 시간 : ${leftTime}`) : null
     }
   }, [leftTime])
+  
+  useEffect(() => {
+    (async () => {
+      // 웹캠 init
+      try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            audio: false,
+            video: {
+              width: {min: 640, ideal: 1920, max: 1920},
+              height: {min: 400, ideal: 1080},
+              aspectRatio: 1.777777778,
+              frameRate: {max: 30},
+              facingMode: 'user',
+            },
+          });
+          videoRef.current.srcObject = stream;
+          videoRef.current.oncanplay = () => {
+            setIsWebCamLoaded(true)
+            console.debug('[시스템] 웹캠이 준비되었습니다.')
+          };
+        } catch (e) {
+            setIsWebCamLoaded(false)
+            setIsStart(false)
+          alert('웹캠을 사용할 수 없거나, 웹캠의 권한을 차단하셨습니다.\n권한을 확인하시고, 다시 시도해보세요!')
+          console.error('[오류] 현재 웹캠을 사용할 수 없습니다.', e.toString())
+        }
+      })()
+  }, [])
   
   useEffect(() => {
     if (isInGame) gameStart()
@@ -198,28 +230,37 @@ export default function Home() {
           <title>텐서플로우로 하는 가위 바위 보</title>
         </Head>
         
+        <video autoPlay={true} ref={videoRef}
+               style={{width: '100%', transform: 'rotateY(180deg)', display: isStart ? 'block' : 'block'}}/>
+        
         {isStart ? (
                 <>
+                  {!isWebCamLoaded ? (
+                      <div>
+                        <h1>게임을 준비하는 중입니다...</h1>
+                      </div>
+                  ) : null}
+                  
                   {!isWin && leftTime > 0 && !usrChoice ? (
                       <div>
                         <h1>준비하세요!</h1>
                         <h3>{leftTime} 초 뒤 게임이 시작됩니다!</h3>
                       </div>
                   ) : null}
-          
+                  
                   <div>
                     {usrChoice !== -1 && usrChoice ? <h1>당신의 선택 : {type2Choice(usrChoice)}</h1> : null}
                     {botChoice !== -1 && botChoice ? <h1>컴퓨터의 선택 : {type2Choice(botChoice)}</h1> : null}
                     {isAfk && usrChoice === -1 ? <h1>아무것도 내지 않았습니다.</h1> : null}
                     <Result type={isWin}/>
                   </div>
-          
+                  
                   {!isWin && leftTime > 0 && usrChoice === -1 ? (
                       <h3>
                         {readyText[leftTime - 1]}
                       </h3>
                   ) : null}
-          
+                  
                   {!isWin && leftTime > 0 && usrChoice === -1 ? <ul>
                     {['가위', '바위', '보']
                         .map((_i, i) => (
@@ -231,14 +272,14 @@ export default function Home() {
                             />
                         ))}
                   </ul> : null}
-          
+                  
                   {!!isWin ? <button onClick={reset}>다시하기</button> : null}
                 </>
             )
             : (
                 <div>
                   <h1>가위바위보 게임</h1>
-          
+                  
                   <button onClick={start}>시작하기</button>
                 </div>
             )}
