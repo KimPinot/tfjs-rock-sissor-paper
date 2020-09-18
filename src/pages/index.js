@@ -37,7 +37,7 @@ function Result({type}) {
 
 const webCamInit = () => new Promise((async (resolve, reject) => {
   try {
-    const webcam = new tmImage.Webcam(1920, 1080, true);
+    const webcam = new tmImage.Webcam(640, 480, true);
     
     await webcam.setup()
     await webcam.play()
@@ -69,13 +69,12 @@ const modelInit = () => new Promise(async (resolve, reject) => {
   }
 })
 
-const detectFromVideoFrame = (model, webcam) => {
+const detectFromVideoFrame = (model, webcam, updateState) => {
   const initFps = 30
   frameRecursion(initFps)
   
   async function predict() {
-    const pred = await model.predict(webcam.canvas);
-    console.log(pred)
+    return await model.predict(webcam.canvas);
   }
   
   async function frameRecursion(count) {
@@ -84,7 +83,7 @@ const detectFromVideoFrame = (model, webcam) => {
     }
     
     if (count === 0) {
-      await predict()
+      updateState(await predict())
     }
     
     webcam.update()
@@ -94,6 +93,26 @@ const detectFromVideoFrame = (model, webcam) => {
     })
   }
 }
+
+// 가장 가까운 값 찾기
+const getNearPos = (res) => new Promise((resolve, reject) => {
+  let near = {
+    className: "",
+    probability: 0
+  }
+  
+  if (!res) {
+    reject()
+  }
+  
+  res.forEach(pos => {
+    if (pos.probability > near.probability) {
+      near = pos;
+    }
+  })
+  
+  resolve(near)
+})
 
 export default function Home() {
   // 가위 : 0 / 바위 : 1 / 보 : 2
@@ -112,6 +131,9 @@ export default function Home() {
   
   const [isWebCamLoaded, setIsWebCamLoaded] = useState(false)
   
+  const [result, setResult] = useState([])
+  // const resRef = useRef(null)
+  
   // 남은 시간 console.debug 로 띄우기
   useEffect(() => {
     {
@@ -119,11 +141,18 @@ export default function Home() {
     }
   }, [leftTime])
   
+  // resRef.current = result
+  
+  useEffect(() => {
+    // getNearPos(result)
+    //     .then(res => console.log(res))
+  }, [result])
+  
   useEffect(() => {
     Promise.all([modelInit(), webCamInit()])
         .then(values => {
           setIsWebCamLoaded(true)
-          detectFromVideoFrame(values[0], values[1])
+          detectFromVideoFrame(values[0], values[1], setResult)
         })
         .catch(err => {
           console.error(err)
