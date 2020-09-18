@@ -42,11 +42,17 @@ const webCamInit = () => new Promise((async (resolve, reject) => {
     await webcam.setup()
     await webcam.play()
     
-    document
-        .getElementById('webcam')
-        .appendChild(webcam.canvas)
+    webcam.canvas.id = "canvas"
+    webcam.canvas.onload = () => console.log('loaded.')
     
-    console.debug('[시스템] 웹캠이 준비되었습니다.')
+    if (!document.getElementById('canvas')) {
+      console.debug('[시스템] 웹캠 엘리먼트가 추가 되었습니다.')
+  
+      document
+          .getElementById('webcam')
+          .appendChild(webcam.canvas)
+    }
+    
     resolve(webcam)
     
   } catch (e) {
@@ -132,7 +138,7 @@ export default function Home() {
   const [isWebCamLoaded, setIsWebCamLoaded] = useState(false)
   
   const [result, setResult] = useState([])
-  // const resRef = useRef(null)
+  const resRef = useRef(null)
   
   // 남은 시간 console.debug 로 띄우기
   useEffect(() => {
@@ -141,7 +147,7 @@ export default function Home() {
     }
   }, [leftTime])
   
-  // resRef.current = result
+  resRef.current = result
   
   useEffect(() => {
     // getNearPos(result)
@@ -162,6 +168,20 @@ export default function Home() {
   useEffect(() => {
     if (isInGame) gameStart()
   }, [isInGame])
+  
+  const choice2Type = (choice) => {
+    switch (choice) {
+      case 'sissor' :
+        return 0
+      case 'rock' :
+        return 1
+      case 'paper' :
+        return 2
+      default :
+        console.error('[오류] 선택 변환 과정에서 오류가 발생했습니다.')
+        return -1
+    }
+  }
   
   // 입력한 타입 => 일반 텍스트
   const type2Choice = (type) => {
@@ -269,10 +289,20 @@ export default function Home() {
           
           // 안내면 진거...
           count(7)
-              .then(() => {
-                if (usrChoiceRef.current === -1) {
-                  afkLose()
+              .then(async () => {
+                const pos = await getNearPos(resRef.current)
+                console.log(pos.className, Math.round(pos.probability))
+                
+                if (Math.round(pos.probability) === 1) {
+                  handleChoice(choice2Type(pos.className))
                 }
+                
+                count(3)
+                    .then(() => {
+                      if (usrChoiceRef.current === -1) {
+                        afkLose()
+                      }
+                    })
               })
         })
   }
