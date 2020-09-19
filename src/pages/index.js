@@ -376,7 +376,7 @@ export default function Home() {
                         ))}
                   </ul> : null}
                   
-                  {!!isWin ? <button onClick={reset}>다시하기</button> : null}
+                  {isWin !== null ? <button onClick={reset}>다시하기</button> : null}
                 </>
             )
             : (
