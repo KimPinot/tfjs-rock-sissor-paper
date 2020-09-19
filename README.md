@@ -5,8 +5,8 @@ tensorflowJS와 Teachable Machine을 사용하여 간단한 가위 바위 보 �
 ### How to run server
 NodeJS 12 이상의 버전이 필요합니다.
 
-1. cli에 `yarn` 명령어를 입력하여 디펜던시를 설치합니다.
-1. cli에 `yarn dev` 명령어를 입력하여 `localhost:3000` 로 접속하여 게임을 플레이 할 수 있습니다.
+1. 터미널에 `npm install` 명령어를 입력하여 디펜던시를 설치합니다.
+1. 터미널에 `npm run dev` 명령어를 입력하여 `localhost:3000` 로 접속하여 게임을 플레이 할 수 있습니다.
 
 ### How to play
 
